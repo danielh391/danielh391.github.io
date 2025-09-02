@@ -142,11 +142,11 @@ fs::perms::all;        // 所有权限
 fs::perms::owner_all;  // 所有者所有权限
 ```
 
-### fs库主要定义了哪些类
+## fs库主要定义了哪些类
 
 C++17 的 `<filesystem>` 库主要定义了以下核心类，它们共同提供了完整的文件系统操作功能：
 
-#### 1. **`std::filesystem::path`** - 路径处理类
+### 1. **`std::filesystem::path`** - 路径处理类
 **最重要的类**，表示文件系统路径，提供路径的构建、解析和操作。
 
 ```cpp
@@ -164,7 +164,7 @@ p1.extension();   // ".txt"
 p1 /= "subdir";   // 添加路径组件
 ```
 
-#### 2. **`std::filesystem::file_status`** - 文件状态类
+### 2. **`std::filesystem::file_status`** - 文件状态类
 包含文件的类型和权限信息。
 
 ```cpp
@@ -175,7 +175,7 @@ fs::file_type type = status.type();
 fs::perms permissions = status.permissions();
 ```
 
-#### 3. **`std::filesystem::directory_entry`** - 目录条目类
+### 3. **`std::filesystem::directory_entry`** - 目录条目类
 表示目录迭代器返回的条目，缓存了文件状态信息以提高性能。
 
 ```cpp
@@ -187,7 +187,7 @@ for (const auto& entry : fs::directory_iterator("/path")) {
 }
 ```
 
-#### 4. **`std::filesystem::directory_iterator`** - 目录迭代器
+### 4. **`std::filesystem::directory_iterator`** - 目录迭代器
 用于遍历目录内容（非递归）。
 
 ```cpp
@@ -197,7 +197,7 @@ for (const auto& entry : fs::directory_iterator("/path/to/dir")) {
 }
 ```
 
-#### 5. **`std::filesystem::recursive_directory_iterator`** - 递归目录迭代器
+### 5. **`std::filesystem::recursive_directory_iterator`** - 递归目录迭代器
 递归遍历目录及其所有子目录。
 
 ```cpp
@@ -208,7 +208,7 @@ for (const auto& entry : fs::recursive_directory_iterator("/path/to/dir")) {
 }
 ```
 
-#### 6. **`std::filesystem::file_type`** - 文件类型枚举
+### 6. **`std::filesystem::file_type`** - 文件类型枚举
 表示不同类型的文件系统对象。
 
 ```cpp
@@ -226,7 +226,7 @@ enum class file_type {
 };
 ```
 
-#### 7. **`std::filesystem::perms`** - 文件权限枚举
+### 7. **`std::filesystem::perms`** - 文件权限枚举
 表示文件的访问权限。
 
 ```cpp
@@ -259,7 +259,7 @@ enum class perms {
 };
 ```
 
-#### 8. **`std::filesystem::space_info`** - 磁盘空间信息类
+### 8. **`std::filesystem::space_info`** - 磁盘空间信息类
 表示文件系统的空间信息。
 
 ```cpp
@@ -270,7 +270,7 @@ std::cout << "Free: " << info.free << " bytes" << std::endl;
 std::cout << "Available: " << info.available << " bytes" << std::endl;
 ```
 
-#### 9. **`std::filesystem::file_time_type`** - 文件时间类型
+### 9. **`std::filesystem::file_time_type`** - 文件时间类型
 表示文件的时间戳（最后修改时间等）。
 
 ```cpp
@@ -281,8 +281,8 @@ std::time_t c_time = decltype(last_write)::clock::to_time_t(last_write);
 std::cout << "Last modified: " << std::ctime(&c_time);
 ```
 
-#### 10. **异常类**
-#### `std::filesystem::filesystem_error`
+### 10. **异常类**
+### `std::filesystem::filesystem_error`
 文件系统操作抛出的异常类，包含额外的路径信息。
 
 ```cpp
@@ -295,9 +295,9 @@ try {
 }
 ```
 
-### 类之间的关系和使用模式
+## 类之间的关系和使用模式
 
-#### 典型工作流程
+### 典型工作流程
 
 ```cpp
 #include <filesystem>
@@ -353,5 +353,5 @@ int main() {
 
 这些类共同提供了一个现代、安全、易用的文件系统操作接口，完全替代了传统的C风格文件操作函数。
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1MjMxNTYwODhdfQ==
+eyJoaXN0b3J5IjpbLTQ1ODk3MDAwNl19
 -->
