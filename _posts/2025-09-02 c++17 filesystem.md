@@ -336,14 +336,14 @@ int main() {
 }
 ```
 
-### 内存管理特点
+## 内存管理特点
 
 这些类都遵循**值语义**（value semantics）：
 - 可以安全地拷贝和赋值
 - 使用RAII原则管理资源
 - 大多数操作不会抛出异常（除非使用可能抛出的重载）
 
-### 跨平台支持
+## 跨平台支持
 
 `<filesystem>` 库自动处理不同操作系统的路径差异：
 - Unix/Linux: `/` 作为路径分隔符
@@ -353,5 +353,5 @@ int main() {
 
 这些类共同提供了一个现代、安全、易用的文件系统操作接口，完全替代了传统的C风格文件操作函数。
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ1ODk3MDAwNl19
+eyJoaXN0b3J5IjpbNzUxMjUyMzQwXX0=
 -->
