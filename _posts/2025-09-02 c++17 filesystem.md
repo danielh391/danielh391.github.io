@@ -142,73 +142,216 @@ fs::perms::all;        // 所有权限
 fs::perms::owner_all;  // 所有者所有权限
 ```
 
-## 实用示例
+### fs库主要定义了哪些类
 
-### 1. 递归计算目录大小
+C++17 的 `<filesystem>` 库主要定义了以下核心类，它们共同提供了完整的文件系统操作功能：
+
+## 1. **`std::filesystem::path`** - 路径处理类
+**最重要的类**，表示文件系统路径，提供路径的构建、解析和操作。
+
 ```cpp
-uintmax_t directory_size(const fs::path& path) {
-    uintmax_t size = 0;
-    for (const auto& entry : fs::recursive_directory_iterator(path)) {
-        if (entry.is_regular_file()) {
-            size += entry.file_size();
-        }
-    }
-    return size;
+namespace fs = std::filesystem;
+
+// 构造和赋值
+fs::path p1("/home/user/file.txt");
+fs::path p2 = "C:\\Windows\\System32";
+fs::path p3 = p1;
+
+// 路径操作
+p1.filename();    // "file.txt"
+p1.parent_path(); // "/home/user"
+p1.extension();   // ".txt"
+p1 /= "subdir";   // 添加路径组件
+```
+
+## 2. **`std::filesystem::file_status`** - 文件状态类
+包含文件的类型和权限信息。
+
+```cpp
+fs::file_status status = fs::status("/path/to/file");
+
+// 获取文件类型和权限
+fs::file_type type = status.type();
+fs::perms permissions = status.permissions();
+```
+
+## 3. **`std::filesystem::directory_entry`** - 目录条目类
+表示目录迭代器返回的条目，缓存了文件状态信息以提高性能。
+
+```cpp
+for (const auto& entry : fs::directory_iterator("/path")) {
+    // entry 是 directory_entry 对象
+    std::cout << "Path: " << entry.path() << std::endl;
+    std::cout << "Is file: " << entry.is_regular_file() << std::endl;
+    std::cout << "Size: " << entry.file_size() << std::endl;
 }
 ```
 
-### 2. 查找特定扩展名的文件
+## 4. **`std::filesystem::directory_iterator`** - 目录迭代器
+用于遍历目录内容（非递归）。
+
 ```cpp
-std::vector<fs::path> find_files(const fs::path& dir, const std::string& ext) {
-    std::vector<fs::path> result;
-    for (const auto& entry : fs::directory_iterator(dir)) {
-        if (entry.is_regular_file() && entry.path().extension() == ext) {
-            result.push_back(entry.path());
-        }
-    }
-    return result;
+// 遍历目录
+for (const auto& entry : fs::directory_iterator("/path/to/dir")) {
+    std::cout << entry.path() << std::endl;
 }
 ```
 
-### 3. 创建备份文件
+## 5. **`std::filesystem::recursive_directory_iterator`** - 递归目录迭代器
+递归遍历目录及其所有子目录。
+
 ```cpp
-void create_backup(const fs::path& file) {
-    if (fs::exists(file)) {
-        fs::path backup = file;
-        backup += ".bak";
-        fs::copy_file(file, backup, fs::copy_options::overwrite_existing);
-    }
+// 递归遍历
+for (const auto& entry : fs::recursive_directory_iterator("/path/to/dir")) {
+    std::cout << entry.path() << std::endl;
+    std::cout << "Depth: " << entry.depth() << std::endl; // 当前深度
 }
 ```
 
-### 4. 跨平台路径处理
+## 6. **`std::filesystem::file_type`** - 文件类型枚举
+表示不同类型的文件系统对象。
+
 ```cpp
-fs::path create_path(const std::string& dir, const std::string& filename) {
-    fs::path full_path = dir;
-    full_path /= filename;  // 自动使用正确的路径分隔符
-    return full_path;
-}
+enum class file_type {
+    none,        // 不存在或无法确定
+    not_found,   // 文件不存在
+    regular,     // 普通文件
+    directory,   // 目录
+    symlink,     // 符号链接
+    block,       // 块设备
+    character,   // 字符设备
+    fifo,        // FIFO管道
+    socket,      // 套接字
+    unknown      // 未知类型
+};
 ```
 
-## 错误处理
+## 7. **`std::filesystem::perms`** - 文件权限枚举
+表示文件的访问权限。
+
+```cpp
+enum class perms {
+    none = 0,
+    
+    // 所有者权限
+    owner_read, owner_write, owner_exec,
+    owner_all = owner_read | owner_write | owner_exec,
+    
+    // 组权限
+    group_read, group_write, group_exec,
+    group_all = group_read | group_write | group_exec,
+    
+    // 其他用户权限
+    others_read, others_write, others_exec,
+    others_all = others_read | others_write | others_exec,
+    
+    // 所有权限
+    all = owner_all | group_all | others_all,
+    
+    // 特殊权限位
+    set_uid, set_gid, sticky_bit,
+    
+    // 掩码
+    mask = all | set_uid | set_gid | sticky_bit,
+    
+    // 未知权限
+    unknown
+};
+```
+
+## 8. **`std::filesystem::space_info`** - 磁盘空间信息类
+表示文件系统的空间信息。
+
+```cpp
+fs::space_info info = fs::space("/path");
+
+std::cout << "Total: " << info.capacity << " bytes" << std::endl;
+std::cout << "Free: " << info.free << " bytes" << std::endl;
+std::cout << "Available: " << info.available << " bytes" << std::endl;
+```
+
+## 9. **`std::filesystem::file_time_type`** - 文件时间类型
+表示文件的时间戳（最后修改时间等）。
+
+```cpp
+fs::file_time_type last_write = fs::last_write_time("/path/to/file");
+
+// 转换为time_t（需要C++20的clock_cast，或使用其他方法）
+std::time_t c_time = decltype(last_write)::clock::to_time_t(last_write);
+std::cout << "Last modified: " << std::ctime(&c_time);
+```
+
+## 10. **异常类**
+### `std::filesystem::filesystem_error`
+文件系统操作抛出的异常类，包含额外的路径信息。
 
 ```cpp
 try {
     fs::file_size("nonexistent.txt");
 } catch (const fs::filesystem_error& e) {
     std::cout << "Error: " << e.what() << std::endl;
-    std::cout << "Path: " << e.path1() << std::endl;
-}
-
-// 或者使用error_code避免异常
-std::error_code ec;
-uintmax_t size = fs::file_size("nonexistent.txt", ec);
-if (ec) {
-    std::cout << "Error: " << ec.message() << std::endl;
+    std::cout << "Path1: " << e.path1() << std::endl;
+    std::cout << "Path2: " << e.path2() << std::endl; // 如果有第二个路径
 }
 ```
 
-这些类和函数使得C++中的文件系统操作变得非常直观和强大，完全替代了传统的C风格文件操作函数。
+## 类之间的关系和使用模式
+
+### 典型工作流程
+
+```cpp
+#include <filesystem>
+#include <iostream>
+
+namespace fs = std::filesystem;
+
+int main() {
+    // 1. 使用 path 构建路径
+    fs::path dir_path = "/home/user/documents";
+    
+    // 2. 检查路径状态
+    if (fs::exists(dir_path) && fs::is_directory(dir_path)) {
+        
+        // 3. 使用 directory_iterator 遍历
+        for (const auto& entry : fs::directory_iterator(dir_path)) {
+            
+            // 4. 每个 entry 是 directory_entry，包含缓存的状态
+            if (entry.is_regular_file()) {
+                
+                // 5. 获取详细状态信息
+                fs::file_status st = entry.status();
+                
+                std::cout << "File: " << entry.path().filename() << std::endl;
+                std::cout << "Size: " << entry.file_size() << " bytes" << std::endl;
+                std::cout << "Type: " << static_cast<int>(st.type()) << std::endl;
+            }
+        }
+        
+        // 6. 检查磁盘空间
+        fs::space_info space = fs::space(dir_path);
+        std::cout << "Free space: " << space.free / (1024*1024) << " MB" << std::endl;
+    }
+    
+    return 0;
+}
+```
+
+### 内存管理特点
+
+这些类都遵循**值语义**（value semantics）：
+- 可以安全地拷贝和赋值
+- 使用RAII原则管理资源
+- 大多数操作不会抛出异常（除非使用可能抛出的重载）
+
+### 跨平台支持
+
+`<filesystem>` 库自动处理不同操作系统的路径差异：
+- Unix/Linux: `/` 作为路径分隔符
+- Windows: `\` 作为路径分隔符，但也接受 `/`
+- 自动处理驱动器字母（Windows）
+- 自动处理根目录表示
+
+这些类共同提供了一个现代、安全、易用的文件系统操作接口，完全替代了传统的C风格文件操作函数。
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTczMTQzMTE1XX0=
+eyJoaXN0b3J5IjpbMjA0OTgzNDI3XX0=
 -->
