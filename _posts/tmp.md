@@ -10,7 +10,7 @@
 
 ---
 
-### 第二阶段：从系统 API (POSIX) 开始
+### 第二阶段：从
 
 **为什么？** 即使你之后会使用高级库，理解底层发生了什么至关重要。它能帮你理解各种抽象背后的代价，并在出现复杂问题时能够调试。
 
@@ -112,5 +112,6 @@
 
 坚持理论与实践结合，多写代码，多读优秀源码（如 muduo），你一定能系统地掌握 C++ 网络编程。祝你学习顺利！
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNzAzMDAzOTFdfQ==
+eyJoaXN0b3J5IjpbLTE1MjkyMDQ5OTAsLTEzNzAzMDAzOTFdfQ
+==
 -->
