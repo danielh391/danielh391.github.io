@@ -10,19 +10,7 @@
 
 ---
 
-### 第二阶段：从系统 API (POSIX) 开始
 
-**为什么？** 即使你之后会使用高级库，理解底层发生了什么至关重要。它能帮你理解各种抽象背后的代价，并在出现复杂问题时能够调试。
-
-1.  **核心概念**：
-    *   **Socket**： 理解什么是套接字，它是通信的端点。
-    *   **IP 地址和端口**： 如何用 `sockaddr_in` (IPv4) 或 `sockaddr_in6` (IPv6) 结构体表示。
-    *   **字节序转换**： `htons`, `htonl`, `ntohs`, `ntohl` 函数。网络字节序是大端模式。
-    *   **TCP vs UDP**： 深刻理解它们的区别（面向连接 vs 无连接、可靠性、流式 vs 数据报）。
-
-2.  **TCP 编程流程**：
-    *   **服务器端**： `socket()` -> `bind()` -> `listen()` -> `accept()` -> `read()`/`write()` -> `close()`
-    *   **客户端**： `socket()` -> `connect()` -> `read()`/`write()` -> `close()`
 
 3.  **UDP 编程流程**：
     *   **服务器/客户端**： `socket()` -> `bind()` (可选于客户端) -> `recvfrom()`/`sendto()` -> `close()`
@@ -112,6 +100,6 @@
 
 坚持理论与实践结合，多写代码，多读优秀源码（如 muduo），你一定能系统地掌握 C++ 网络编程。祝你学习顺利！
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNzAzMDAzOTEsLTE1MjkyMDQ5OTAsLT
-EzNzAzMDAzOTFdfQ==
+eyJoaXN0b3J5IjpbODIzNzA5MDkzLC0xMzcwMzAwMzkxLC0xNT
+I5MjA0OTkwXX0=
 -->
