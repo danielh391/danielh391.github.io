@@ -28,7 +28,7 @@
 
 **学习建议**：
 *   **动手**： 不要只看书。亲手编写一个简单的 Echo 服务器（TCP/UDP）。
-*   **挑战**： 尝试用 `epoll` + 非阻塞 I/O + 线程池实现一个支持多客户端的聊天室服务器。这会极大地巩固你的知识。
+*   **挑战**： 尝试用 。这会极大地巩固你的知识。
 
 ---
 
@@ -100,6 +100,6 @@
 
 坚持理论与实践结合，多写代码，多读优秀源码（如 muduo），你一定能系统地掌握 C++ 网络编程。祝你学习顺利！
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODIzNzA5MDkzLC0xMzcwMzAwMzkxLC0xNT
-I5MjA0OTkwXX0=
+eyJoaXN0b3J5IjpbLTIxNDY1NzczNjAsODIzNzA5MDkzLC0xMz
+cwMzAwMzkxLC0xNTI5MjA0OTkwXX0=
 -->
